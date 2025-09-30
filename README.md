@@ -1,4 +1,170 @@
 # lapres-jarkom-modul1-k10
+## Anggota
+| Nama                      | NRP        |
+| --------------------------| ---------- |
+| Bayu Kurniawan            | 5027241055 |
+| Ica Zika Hamizah          | 5027241058 |
+
+## Pembahasan soal
+### Nomor 1
+Pertama buat rangkaian, seperti dibawah ini
+
+![rangkaian](assets/rangkaian.png)
+
+### Nomor 2
+Config Eru sebagai router ke switch 1 dan switch 2
+```
+auto eth0
+iface eth0 inet dhcp
+
+auto eth1
+iface eth1 inet static
+    address 192.216.1.1
+    netmask 255.255.255.0
+
+auto eth2
+iface eth2 inet static
+    address 192.216.2.1
+    netmask 255.255.255.0
+```
+
+lalu tambahkan config ke /root/.bashrc
+```
+apt update && apt install -y iptables
+iptables -t nat -A POSTROUTING -o eth0 -j MASQUERADE -s 192.216.0.0/16
+echo "nameserver 192.168.122.1" > /etc/resolv.conf
+```
+
+### Nomor 3
+Setiap perangkat harus punya ip, config masing masing client dulu
+
+- Melkor
+```
+auto eth0
+iface eth0 inet static
+    address 192.216.1.2
+    netmask 255.255.255.0
+    gateway 192.216.1.1
+```
+
+- Manwe
+```
+auto eth0
+iface eth0 inet static
+    address 192.216.1.3
+    netmask 255.255.255.0
+    gateway 192.216.1.1
+```
+
+- Varda
+```
+auto eth0
+iface eth0 inet static
+    address 192.216.2.2
+    netmask 255.255.255.0
+    gateway 192.216.2.1
+```
+
+- Ulmo
+```
+auto eth0
+iface eth0 inet static
+    address 192.216.2.3
+    netmask 255.255.255.0
+    gateway 192.216.2.1
+```
+
+### Nomor 4
+Semua client terhubung ke internet, agar terhubung jalankan
+`echo "nameserver 192.168.122.1" > /etc/resolv.conf`
+
+Cek dengan ping google, jika berhasil maka sudah tersambung ke internet dan cek `ip a` pastikan ip sudah benar di masing-masing client
+
+### Nomor 5
+edit `/root/.bashrc`, isi dengan config seperti apt update, apt install sesuai kebutuhan. Agar jika di restart package yang di download tidak hilang
+
+### Nomor 6
+Masuk ke manwe dengan cara `telnet 10.15.43.32 port`
+
+Lalu download file yang sudah disediakan (traffic.sh).
+Setelah terdownload jangan lupa di unzip lalu ubah permissionnya dulu agar bisa di execute. Setelah itu, jalankan filenya dan jangan lupa capture dengan wireshark
+
+![rangkaian](assets/6_traffic.png)
+
+MASUKIN HASIL CAPTURE WIRESHARK
+
+### Nomor 7
+Pertama buat dulu 2 user baru yaitu ainur dan malkor, ainur bisa mengakses folder shared sedangkan malkor tidak bisa mengakses folder shared.
+![rangkaian](assets/7_adduser.png)
+
+Setelah user berhasil dibuat, buat folder shared seperti gambar dibawah.
+gunakan `usermod` untuk langsung menuju folder tujuan, jadi ketika d=kedua user login, akan diarahkan langsung ke `/srv/ftp/shared`.
+Lalu ubah permission owner dengan `chown` agar ainur bisa membaca dan menulis di folder `shared`.
+Buat permission folder shared menjadi 700, artinya hanya owner yang bisa mengakses folder `shared`.
+
+Lalu buat file untuk mengetes apakah user ainur bisa read and write. Buat file di folder shared dan buat juga di root.
+![rangkaian](assets/7_setup.png)
+
+Coba login dengan user ainur, dan tes dengan `put` dan `get`.
+Seperti gambar dibawah, ainur bisa read dan write di folder shared
+![rangkaian](assets/7_ainur_login.png)
+
+Lalu coba login dengan user melkor, dan ternyata user tidak bisa login. karena suda di set tujuan setelah login langsung masuk ke folder `shared`, maka login langsung ditolak, artinya melkor tidak bisa read dan write di folder tersebut sesuai dengan ketentuan soal.
+![rangkaian](assets/7_melkor_login.png)
+
+### Nomor 8
+Pertama download dulu file `ramalan-cuaca.zip` di ulmo (maaf di gambar 'elmo' karena salah ketik) lalu unzip.
+
+Lalu masuk di eru untuk start ftp dengan command berikut
+`service vsftpd start`.
+
+Kembali lagi ke elmo, lalu upload file yang sudah diekstrak tadi yakni `cuaca.txt` dan `mendung.jpg` menggunakan `put`.
+Hasilnya bisa dilihat pada gambar dibawah, berhasil upload 2 file tersebut ke server ftp.
+
+![rangkaian](assets/8_elmo_upload.png)
+
+### Nomor 9
+Pertama download dulu file di eru lalu start vsftpd-nya. Lalu aktifkan ftp dan upload file kitab_penciptaan.txt ke server.
+
+Lalu pindah ke manwe dan jalankan ftp, login menggunakan user ainur lalu unduh file kitab_penciptaan.txt dari server.
+
+Karena di soal diperintahkan untuk ubah akses agar ainur hanya bisa read, maka balik ke eru dan masukkan command `chmod 555 /srv/ftp/shared` lalu jangan lupa restart vsftpd.
+
+Masuk ke ulmo lagi dan coba untuk upload file ke server, login dengan user ainur.
+
+Hasilnya pasti failed, karena ainur memiliki akses read-only.
+
+![rangkaian](assets/9_eru_upload.png)
+![rangkaian](assets/9_manwe_download.png)
+![rangkaian](assets/9_cek_akses_ainur.png)
+
+### Nomor 10
+Melkor melakukan ping ke eru
+`ping 192.216.1.1 -c 100`
+Berikut hasilnya:
+![rangkaian](assets/10_hasil.png)
+
+Analisis
+- Packet Loss
+Dari 100 paket yang dikirim, semua diterima (100 received). Jadi tidak ada packet loss (0%).
+
+- Average Round Trip Time (RTT)
+Nilai rata-rata RTT adalah 0.442 ms. Nilai ini tergolong sangat kecil → menunjukkan jaringan stabil.
+
+- Dampak ke Eru
+Karena tidak ada packet loss dan RTT tetap rendah, maka spam ping 100 paket tidak mempengaruhi kinerja Eru secara signifikan. Artinya server Eru masih bisa merespon normal meskipun mendapat banyak request ICMP dari Melkor.
+
+### Nomor 11
+![rangkaian](assets/11_config.png)
+![rangkaian](assets/11_user.png)
+![rangkaian](assets/11_login.png)
+
+### Nomor 12
+![rangkaian](assets/12_port.png)
+
+### Nomor 13
+![rangkaian](assets/13_eru.png)
+![rangkaian](assets/13_varda_login.png)
 
 ### 14. Setelah gagal mengakses FTP, Melkor melancarkan serangan brute force terhadap  Manwe. Analisis file capture yang disediakan dan identifikasi upaya brute force Melkor. (link file) nc 10.15.43.32 3401
 
