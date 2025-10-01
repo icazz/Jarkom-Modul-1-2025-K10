@@ -155,14 +155,35 @@ Nilai rata-rata RTT adalah 0.442 ms. Nilai ini tergolong sangat kecil → menunj
 Karena tidak ada packet loss dan RTT tetap rendah, maka spam ping 100 paket tidak mempengaruhi kinerja Eru secara signifikan. Artinya server Eru masih bisa merespon normal meskipun mendapat banyak request ICMP dari Melkor.
 
 ### Nomor 11
+Pertama download dulu package yang dibutuhkan yakni telnet
+Lalu ubah confignya di file `/etc/inetd.conf`
+cari bagian seperti ini, pastikan tidak ter-comment
+```
+telnet stream tcp nowait root /usr/sbin/tcpd /usr/sbin/telnetd
+```
+Selanjutnya coba login di eru dengan ip `telnet 192.216.1.2`. Lalu login sesuai user yang tadi di daftarkan, jika berhasil maka hasilnya seperti gambar dibawah ini.
 ![rangkaian](assets/11_config.png)
+
+Setelah setup siap, start atau restart openbsd-inetd, lalu masukkan user baru dengan menggunakan useradd di ssh. Lalu jangan lupa ubah passwordnya.
 ![rangkaian](assets/11_user.png)
+
 ![rangkaian](assets/11_login.png)
 
 ### Nomor 12
+Pertama identifikasi port yang terbuka, port 21 ternyata memakai ftp dan port 80, 666 memakai apache2.
+
+Download dulu ftp dan apache2 dengan command dibawah ini
+```
+apt install netcat-openbsd
+service vsftpd start
+```
+Setelah itu start keduanya, cek port 21, 80, dan 666. Hasilnya seperti pada gambar bahwa port 21 dan 80 terbuka sedangkan 666 tertutup.
 ![rangkaian](assets/12_port.png)
 
 ### Nomor 13
+Untuk step pertama, download ssh dulu, jika sudah start servicenya.
+lalu coba cari apakah ssh sudah menyala dan tersedia menggunakan command `netstat -tuln | grep :22`
+Setelah itu, coba login menggunakan user ainur seperti dibawah ini.
 ![rangkaian](assets/13_eru.png)
 ![rangkaian](assets/13_varda_login.png)
 
