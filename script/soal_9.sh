@@ -6,13 +6,13 @@ unzip kitab_penciptaan.zip
 service vsftpd restart
 ftp 192.216.1.1
 # login dengan user ainur
-ftp> put kitab_penciptaan.txt
+# upload kitab_penciptaan.txt
 
 # in manwe
 service vsftpd restart
 ftp 192.216.1.1
 # login dengan user ainur
-ftp> get kitab_penciptaan.txt
+# download kitab_penciptaan.txt
 
 #in eru
 chmod 555 /srv/ftp/shared
@@ -22,4 +22,4 @@ service vsftpd restart
 echo "hai" > test.txt
 ftp 192.216.1.1
 # login dengan user ainur dan coba put file
-ftp> put test.txt
+# cona upload test.txt ke ftp server

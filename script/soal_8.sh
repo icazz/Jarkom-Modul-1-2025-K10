@@ -8,5 +8,4 @@ unzip ramalan-cuaca.zip
 service vsftpd start
 
 ftp 192.216.1.1
-ftp> put cuaca.txt
-ftp> put mendung.jpg
+# upload cuaca.txt dan mendung.jpg
