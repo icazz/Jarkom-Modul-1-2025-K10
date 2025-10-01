@@ -202,6 +202,9 @@ penyelesaian :
 ### 15. Melkor menyusup ke ruang server dan memasang keyboard USB berbahaya pada node Manwe. Buka file capture dan identifikasi pesan atau ketikan (keystrokes) yang berhasil dicuri oleh Melkor untuk menemukan password rahasia. (link file) nc 10.15.43.32 3402
 
 penyelesaian :
+- gunakan filter '_ws.col.protocol == "USBHID"' untuk menampilkan report dari penggunaan USB. Dari payload kita bisa temukan bahwa device yang digunakan adalah Keyboard.
+<img width="1885" height="689" alt="image" src="https://github.com/user-attachments/assets/87678bbe-5dce-4762-9180-43126eb9849d" />
+
 
 ### 16. Melkor semakin murka ia meletakkan file berbahaya di server milik Manwe. Dari file capture yang ada, identifikasi file apa yang diletakkan oleh Melkor. (link file) nc 10.15.43.32 3403
 
@@ -260,3 +263,16 @@ penyelesaian :
 <img width="1529" height="516" alt="image" src="https://github.com/user-attachments/assets/4997909d-15b9-477b-b3c2-db340617736b" />
 
 ### 20. Untuk yang terakhir kalinya, rencana besar Melkor yaitu menanamkan sebuah file berbahaya kemudian menyembunyikannya agar tidak terlihat oleh Eru. Tetapi Manwe yang sudah merasakan adanya niat jahat dari Melkor, ia menyisipkan bantuan untuk mengungkapkan rencana Melkor. Analisis file capture dan identifikasi kegunaan bantuan yang diberikan oleh Manwe untuk menggagalkan rencana jahat Melkor selamanya. (link file) nc 10.15.43.32 3407
+
+- menggunakan filter **tls** kita bisa menemukan banyak paket dengan protocol TLS.
+<img width="1919" height="643" alt="image" src="https://github.com/user-attachments/assets/472f9a7e-785c-45b8-9bf0-1e14b5efe324" />
+sayangnya informasi yang ditampilkan hanya **Application Data**. Hal ini berarti packet tersebut telah di enkripsi sehingga perlu di dekripsi terlebih dahulu.
+
+- Pada menu **Edit -> Preference -> Protocols -> TLS -> (Pre)-Master-Secret log filename** pilih file **keyslogfile.txt** yang kita dapatkan dari soal.
+<img width="1245" height="425" alt="image" src="https://github.com/user-attachments/assets/fe5873ab-d018-4fff-966d-8aa6ae974557" />
+<img width="923" height="281" alt="image" src="https://github.com/user-attachments/assets/3c0242ec-d042-41e9-affa-c551b54df626" />
+
+- setelah file keyslogfile.txt diimport, maka kini packet yang tadinya hanya berisi informasi **Application Data** kini berubah menjadi **[TLS Segment of a reassambled PSU]**
+<img width="1919" height="660" alt="image" src="https://github.com/user-attachments/assets/aa0ce22e-dfbd-41ec-a78c-4bbe40d15a5d" />
+
+
