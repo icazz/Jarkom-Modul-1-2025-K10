@@ -253,6 +253,12 @@ penyelesaian :
 
 penyelesaian :
 
+- gunakan filter **smb** untuk meyortir paket yang ada. kemudian pada menu **File -> Export Object -> SMB** akan ada 2 file mencurigakan dengan extension aplikasi (.exe). Export kedua file tersebut dengan format Raw, lalu lakukan hashing terhadap kedua file tersebut.
+<img width="1919" height="1074" alt="image" src="https://github.com/user-attachments/assets/5d3d647b-3665-4ee9-9b70-48693b1d04ec" />
+<img width="1634" height="104" alt="image" src="https://github.com/user-attachments/assets/c1b7c073-a22e-4535-b4f9-6115d5afdacc" />
+<img width="1193" height="630" alt="image" src="https://github.com/user-attachments/assets/2808ea81-d3cb-4ea5-be38-6d758dc69d88" />
+    
+
 ### 19. Manwe mengirimkan email berisi surat cinta kepada Varda melalui koneksi yang tidak terenkripsi. Melihat hal itu Melkor sipaling jahat langsung melancarkan aksinya yaitu meneror Varda dengan email yang disamarkan. Analisis file capture jaringan dan gagalkan lagi rencana busuk Melkor. (link file) nc 10.15.43.32 3406
 
 penyelesaian :
@@ -274,5 +280,13 @@ sayangnya informasi yang ditampilkan hanya **Application Data**. Hal ini berarti
 
 - setelah file keyslogfile.txt diimport, maka kini packet yang tadinya hanya berisi informasi **Application Data** kini berubah menjadi **[TLS Segment of a reassambled PSU]**
 <img width="1919" height="660" alt="image" src="https://github.com/user-attachments/assets/aa0ce22e-dfbd-41ec-a78c-4bbe40d15a5d" />
+
+- Pada menu File -> Export Object -> HTTP terdapat file mencurigakan (invest_20.dll). export file tersebut lalu lakukan hashing untuk mendapatkan flag pada soal ini.
+<img width="933" height="687" alt="image" src="https://github.com/user-attachments/assets/ea467561-b0e5-4c4e-9d4e-df64b69f957b" />
+<img width="986" height="55" alt="image" src="https://github.com/user-attachments/assets/13e38065-751f-4333-826e-1d1492d08dc8" />
+<img width="1176" height="544" alt="image" src="https://github.com/user-attachments/assets/fa6c9fcc-eb04-4b2c-beff-cf6c71073959" />
+
+
+
 
 
